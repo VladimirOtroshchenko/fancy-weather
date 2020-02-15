@@ -1,0 +1,35 @@
+.header__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: blue;
+    height: 30px;
+}
+
+.header__nav__btns-group {
+    display: flex;
+    justify-content: space-between;
+    width: 25%;
+    height: 100%;
+}
+
+.header__nav__btn {
+    width: 30px;
+    height: 100%;
+}
+
+.header__nav__btns-group--lang {
+    width: 60px;
+}
+
+.header__nav__search-field {
+    height: 100%;
+}
+
+.header__nav__search-field--input {
+    height: 100%;
+}
+
+.header__nav__search-field--btn {
+    height: 100%;
+}
