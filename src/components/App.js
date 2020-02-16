@@ -4,12 +4,21 @@ import Header from './header/Header';
 import Main from './main/Main';
 
 class App extends Component {
+  state = {
+    backgroundImage: null,
+  }
+
+  setBackground = (img) => {
+    this.setState({backgroundImage: img.src});
+    console.log(img.src);
+  }
+
   render() {
     return (
-      <div className="container">
+      <div className="container" style={{backgroundImage: "url(" + this.state.backgroundImage + ")"}}>
         <div className="content">
           <Header />
-          <Main />
+          <Main setBackground={this.setBackground}/>
         </div>
       </div>
     );

@@ -1,7 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function CurrentDate({date}) {
+function CurrentDate() {
+  const options = {
+    weekday: 'short',
+    month: 'long',
+    day: 'numeric',
+  };
+  
+  const date = new Date().toLocaleString('en-US', options);
   return (
     <div className='main__weather__date'>
       {date}

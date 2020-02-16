@@ -5,13 +5,16 @@ import CurrentDate from './currentDate/CurrentDate';
 import Weather from './weather/Weather';
 import ThreeDaysCast from './threeDaysCast/ThreeDaysCast';
 import Map from './map/Map';
+import BackgroundQuery from './background/Background';
+import PropTypes from 'prop-types';
 
 class Main extends Component {
   state = {
-    currentCoords: null,
+    latitude: null,
+    longitude: null,
     city: null,
     country: null,
-    date: new Date().toDateString(),
+    // date: new Date().toLocaleString('En-US'),
     currentTemperature: null,
     description: null,
     feelsLike: null,
@@ -21,6 +24,7 @@ class Main extends Component {
 
   componentDidMount() {
     const success = (pos) => {
+      this.setState({latitude: pos.coords.latitude, longitude: pos.coords.longitude});
       const base = 'https://api.opencagedata.com/geocode/v1/';
       const format = 'json';
       const deliver = '%2C';
@@ -36,7 +40,10 @@ class Main extends Component {
       const urlCoords = `${base}${format}?${queryString}`;
 
       fetch(urlCoords).then(res => res.json()).then(json => {
-        this.setState({city: json.results[0].components.city, country: json.results[0].components.country});
+        this.setState({
+          city: json.results[0].components.city, 
+          country: json.results[0].components.country,
+        });
       });
 
       const baseWeather = 'https://api.openweathermap.org/data/2.5/forecast?';
@@ -55,12 +62,13 @@ class Main extends Component {
 
       fetch(urlWeather).then(res => res.json()).then(json => {
         this.setState({
-          currentTemperature: json.list[0].main.temp,
+          currentTemperature: parseInt(json.list[0].main.temp),
           description: json.list[0].weather[0].description,
-          feelsLike: json.list[0].main.feels_like,
-          wind: json.list[0].wind.speed,
-          humidity: json.list[0].main.humidity,
+          feelsLike: parseInt(json.list[0].main.feels_like),
+          wind: parseInt(json.list[0].wind.speed),
+          humidity: parseInt(json.list[0].main.humidity)
         })
+        BackgroundQuery(this.props.setBackground, json.list[0].weather[0].main);
       });
     }
   
@@ -82,7 +90,7 @@ class Main extends Component {
       <div className='main'>
         <div className='main__weather'>
           <Place city={this.state.city} country={this.state.country}/>
-          <CurrentDate date={this.state.date}/>
+          <CurrentDate />
           <Weather 
             currentTemperature={this.state.currentTemperature} 
             description={this.state.description}
@@ -93,11 +101,16 @@ class Main extends Component {
           <ThreeDaysCast date={this.state.date}/>
         </div>
         <div className='main__map'>
-          <Map />
+          <Map latitude={this.state.latitude} longitude={this.state.longitude}/>
         </div>
       </div>
     )
   }
 }
+
+Main.propTypes = {
+  setBackground: PropTypes.func,
+};
+
 
 export default Main;

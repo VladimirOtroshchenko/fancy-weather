@@ -1,8 +1,8 @@
 import React, {Fragment} from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import Mapbox from './Mapbox';
 
-function Map() {
+function Map({latitude, longitude}) {
   return (
     <Fragment>
       <div className='main__map__coords'>
@@ -10,14 +10,15 @@ function Map() {
         long
       </div>
       <map className='main__map--map' id='map'>
-        <Mapbox />
+        <Mapbox latitude={latitude} longitude={longitude}/>
       </map>
     </Fragment>
   )
 }
 
-// ThreeDaysCast.propTypes = {
-//   date: PropTypes.string
-// };
+Map.propTypes = {
+  latitude: PropTypes.number,
+  longitude: PropTypes.number
+};
 
 export default Map;
