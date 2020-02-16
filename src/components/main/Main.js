@@ -1,121 +1,99 @@
 import React, { Component } from 'react';
 import './Main.scss';
+import Place from './place/Place';
+import CurrentDate from './currentDate/CurrentDate';
+import Weather from './weather/Weather';
+import ThreeDaysCast from './threeDaysCast/ThreeDaysCast';
+import Map from './map/Map';
 
 class Main extends Component {
   state = {
+    currentCoords: null,
     city: null,
     country: null,
     date: new Date().toDateString(),
     currentTemperature: null,
     description: null,
+    feelsLike: null,
+    wind: null,
+    humidity: null,
   }
 
   componentDidMount() {
-    async function getData(latitude, longitude) {
-      try {
-        const base = 'https://api.opencagedata.com/geocode/v1/';
-        const format = 'json';
-        const deliver = '%2C';
-        const queryParams = {
-          query: `${latitude}${deliver}${longitude}`,
-          key: '3f2b0bc176fa446f91d041a65ad79924',
-          pretty: '1',
-        };
-    
-        const queryString = Object.entries(queryParams)
-          .map((param) => `${param[0]}=${param[1]}`)
-          .join('&');
-        const urlCoords = `${base}${format}?${queryString}`;
-    
-        const baseWeather = 'https://api.openweathermap.org/data/2.5/forecast?';
-        const queryParamsWeather = {
-          lat: latitude,
-          lon: longitude,
-          lang: 'en',
-          units: 'metric',
-          APPID: 'f83bb7d64b80f33101e6f599516fc20a',
-        };
-    
-        if (localStorage.getItem('unit') === 'C') {
-          queryParamsWeather.units = 'metric';
-        } else if (localStorage.getItem('unit') === 'F') {
-          queryParamsWeather.units = 'imperial';
-        }
-    
-        const queryStringWeather = Object.entries(queryParamsWeather)
-          .map((param) => `${param[0]}=${param[1]}`)
-          .join('&');
-        const urlWeather = `${baseWeather}${queryStringWeather}`;
-    
-        const resCity = await fetch(urlCoords);
-        const parsedCity = await resCity.json();
-    
-        const resWeather = await fetch(urlWeather);
-        const parsedWeather = await resWeather.json();
-    
+    const success = (pos) => {
+      const base = 'https://api.opencagedata.com/geocode/v1/';
+      const format = 'json';
+      const deliver = '%2C';
+      const queryParams = {
+        query: `${pos.coords.latitude}${deliver}${pos.coords.longitude}`,
+        key: '3f2b0bc176fa446f91d041a65ad79924',
+        pretty: '1',
+      };
 
-      } catch (err) {
-        console.log('error');
-      }
-    }
+      const queryString = Object.entries(queryParams)
+        .map((param) => `${param[0]}=${param[1]}`)
+        .join('&');
+      const urlCoords = `${base}${format}?${queryString}`;
 
-    const optionsGeo = {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0,
-    };
-    
-    function success({ coords: { latitude, longitude } }) {
-      getData(latitude, longitude);
+      fetch(urlCoords).then(res => res.json()).then(json => {
+        this.setState({city: json.results[0].components.city, country: json.results[0].components.country});
+      });
+
+      const baseWeather = 'https://api.openweathermap.org/data/2.5/forecast?';
+      const queryParamsWeather = {
+        lat: pos.coords.latitude,
+        lon: pos.coords.longitude,
+        lang: 'en',
+        units: 'metric',
+        APPID: 'f83bb7d64b80f33101e6f599516fc20a',
+      };
+
+      const queryStringWeather = Object.entries(queryParamsWeather)
+        .map((param) => `${param[0]}=${param[1]}`)
+        .join('&');
+      const urlWeather = `${baseWeather}${queryStringWeather}`;
+
+      fetch(urlWeather).then(res => res.json()).then(json => {
+        this.setState({
+          currentTemperature: json.list[0].main.temp,
+          description: json.list[0].weather[0].description,
+          feelsLike: json.list[0].main.feels_like,
+          wind: json.list[0].wind.speed,
+          humidity: json.list[0].main.humidity,
+        })
+      });
     }
-    
-    function error(err) {
+  
+    const error = (err) => {
       console.warn(`ERROR(${err.code}): ${err.message}`);
     }
-    
-    navigator.geolocation.getCurrentPosition(success, error, optionsGeo);
+
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0
+    };
+
+    navigator.geolocation.getCurrentPosition(success, error, options);
   }
 
   render() {
     return (
       <div className='main'>
         <div className='main__weather'>
-          <div className='main__weather__place'>
-            city, country
-          </div>
-          <div className='main__weather__date'>
-            <p>{new Date().toDateString()}</p>
-          </div>
-          <div className='main__weather__current-weather'>
-            <div className='main__weather__current-weather--temperature'>
-              current temp
-            </div>
-            <div className='main__weather__current-weather--description'>
-              rainy <br />
-              feels like <br />
-              qwdqwdqd <br />
-            </div>
-          </div>
-          <div className='main__weather__three-days-forecast'>
-            <div className='main__weather__three-days-forecast__first'>
-              tomorrow
-            </div>
-            <div className='main__weather__three-days-forecast__second'>
-              tomorrow
-            </div>
-            <div className='main__weather__three-days-forecast__third'>
-              tomorrow
-            </div>
-          </div>
+          <Place city={this.state.city} country={this.state.country}/>
+          <CurrentDate date={this.state.date}/>
+          <Weather 
+            currentTemperature={this.state.currentTemperature} 
+            description={this.state.description}
+            feelsLike={this.state.feelsLike}
+            wind={this.state.wind}
+            humidity={this.state.humidity}
+          />
+          <ThreeDaysCast date={this.state.date}/>
         </div>
         <div className='main__map'>
-          <div className='main__map__coords'>
-            lat <br />
-            long
-          </div>
-          <div className='main__map--map'>
-          
-          </div>
+          <Map />
         </div>
       </div>
     )
