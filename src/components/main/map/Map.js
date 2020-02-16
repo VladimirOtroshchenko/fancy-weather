@@ -1,16 +1,28 @@
 import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
-import Mapbox from './Mapbox';
+import ReactMapboxGl from 'react-mapbox-gl';
 
 function Map({latitude, longitude}) {
+  const Map = ReactMapboxGl({
+    accessToken:
+      'pk.eyJ1IjoidWxhZHppbWlyLWF0cm9zaGNoYW5rYSIsImEiOiJjazNoZTNtNGMwYW84M21xdHhwc2hqcXZpIn0.GpqDhq5ctOG4hKxhZ_xKjg'
+  });
   return (
     <Fragment>
       <div className='main__map__coords'>
-        lat <br />
-        long
+        latitude: <br/>
+        longitude:
       </div>
       <map className='main__map--map' id='map'>
-        <Mapbox latitude={latitude} longitude={longitude}/>
+        <Map
+          style="mapbox://styles/mapbox/streets-v9"
+          containerStyle={{
+            height: '260px',
+            width: '260px',
+            borderRadius: '10px',
+          }}
+          center={[longitude, latitude]}
+        />
       </map>
     </Fragment>
   )

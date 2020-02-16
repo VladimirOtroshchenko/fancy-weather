@@ -12,7 +12,8 @@ function Mapbox({longitude, latitude}) {
       style="mapbox://styles/mapbox/streets-v9"
       containerStyle={{
         height: '300px',
-        width: '300px'
+        width: '300px',
+        borderRadius: '5px',
       }}
       center={[longitude, latitude]}
     />

@@ -14,12 +14,18 @@ class Main extends Component {
     longitude: null,
     city: null,
     country: null,
-    // date: new Date().toLocaleString('En-US'),
     currentTemperature: null,
     description: null,
     feelsLike: null,
     wind: null,
     humidity: null,
+    icon: null,
+    icon1: null,
+    icon2: null,
+    icon3: null,
+    weath1: null,
+    weath2: null,
+    weath3: null,
   }
 
   componentDidMount() {
@@ -66,7 +72,14 @@ class Main extends Component {
           description: json.list[0].weather[0].description,
           feelsLike: parseInt(json.list[0].main.feels_like),
           wind: parseInt(json.list[0].wind.speed),
-          humidity: parseInt(json.list[0].main.humidity)
+          humidity: parseInt(json.list[0].main.humidity),
+          icon: json.list[0].weather[0].icon,
+          icon1: json.list[8].weather[0].icon,
+          icon2: json.list[16].weather[0].icon,
+          icon3: json.list[24].weather[0].icon,
+          weath1: json.list[8].main.temp,
+          weath2: json.list[16].main.temp,
+          weath3: json.list[24].main.temp,
         })
         BackgroundQuery(this.props.setBackground, json.list[0].weather[0].main);
       });
@@ -86,6 +99,8 @@ class Main extends Component {
   }
 
   render() {
+    const weatherIconBaseUrl = 'http://openweathermap.org/img/wn/';
+    const format = '@2x.png';
     return (
       <div className='main'>
         <div className='main__weather'>
@@ -97,9 +112,17 @@ class Main extends Component {
             feelsLike={this.state.feelsLike}
             wind={this.state.wind}
             humidity={this.state.humidity}
+            icon={weatherIconBaseUrl + this.state.icon + format}
           />
-          <ThreeDaysCast date={this.state.date}/>
         </div>
+        <ThreeDaysCast 
+          icon1={weatherIconBaseUrl + this.state.icon1 + format}
+          icon2={weatherIconBaseUrl + this.state.icon2 + format}
+          icon3={weatherIconBaseUrl + this.state.icon3 + format}
+          weath1={this.state.weath1}
+          weath2={this.state.weath2}
+          weath3={this.state.weath3}
+        />
         <div className='main__map'>
           <Map latitude={this.state.latitude} longitude={this.state.longitude}/>
         </div>

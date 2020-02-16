@@ -16,4 +16,15 @@
     padding: 2% 0 0;
     font-family: 'Roboto', sans-serif;
     color: #e6e5e5;
+    z-index: 2;
+}
+
+.bg-dark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0000004d;
+    z-index: 0;
 }

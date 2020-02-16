@@ -10,12 +10,12 @@ class App extends Component {
 
   setBackground = (img) => {
     this.setState({backgroundImage: img.src});
-    console.log(img.src);
   }
 
   render() {
     return (
       <div className="container" style={{backgroundImage: "url(" + this.state.backgroundImage + ")"}}>
+        <div className='bg-dark'></div>
         <div className="content">
           <Header />
           <Main setBackground={this.setBackground}/>

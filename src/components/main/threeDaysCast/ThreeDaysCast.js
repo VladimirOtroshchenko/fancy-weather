@@ -1,24 +1,44 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function ThreeDaysCast({date}) {
+function ThreeDaysCast({icon1, icon2, icon3, weath1, weath2, weath3}) {
+  const options = {
+    weekday: 'long',
+  };
+
+  const today = new Date();
+  const date1 = new Date(today)
+  date1.setDate(date1.getDate() + 1)
+  const date2 = new Date(today)
+  date2.setDate(date2.getDate() + 2)
+  const date3 = new Date(today)
+  date3.setDate(date3.getDate() + 3)
+
   return (
     <div className='main__weather__three-days-forecast'>
-      <div className='main__weather__three-days-forecast__first'>
-        {date}
+      <div className='main__weather__three-days-forecasts forecast__first'>
+        {date1.toLocaleString('en-US', options) + ': ' + parseInt(weath1)}&#176;C
+        <img src={icon1} alt='' className='main__weather__three-days-forecast--icons'></img>
       </div>
-      <div className='main__weather__three-days-forecast__second'>
-        {date}
+      <div className='main__weather__three-days-forecasts forecast__first'>
+        {date2.toLocaleString('en-US', options) + ': ' + parseInt(weath2)}&#176;C
+        <img src={icon2} alt='' className='main__weather__three-days-forecast--icons'></img>
       </div>
-      <div className='main__weather__three-days-forecast__third'>
-        {date}
+      <div className='main__weather__three-days-forecasts forecast__first'>
+        {date3.toLocaleString('en-US', options) + ': ' + parseInt(weath3)}&#176;C
+        <img src={icon3} alt='' className='main__weather__three-days-forecast--icons'></img>
       </div>
     </div>
   )
 }
 
 ThreeDaysCast.propTypes = {
-  date: PropTypes.string
+  icon1: PropTypes.string,
+  icon2: PropTypes.string,
+  icon3: PropTypes.string,
+  weath1: PropTypes.number,
+  weath2: PropTypes.number,
+  weath3: PropTypes.number,
 };
 
 export default ThreeDaysCast;

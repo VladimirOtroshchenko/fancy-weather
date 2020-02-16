@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 function CurrentDate() {
   const options = {
-    weekday: 'short',
+    weekday: 'long',
     month: 'long',
     day: 'numeric',
   };
