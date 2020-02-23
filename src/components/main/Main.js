@@ -105,7 +105,7 @@ class Main extends Component {
       <div className='main'>
         <div className='main__weather'>
           <Place city={this.state.city} country={this.state.country}/>
-          <CurrentDate />
+          <CurrentDate lang={this.props.lang}/>
           <Weather 
             currentTemperature={this.state.currentTemperature} 
             description={this.state.description}
@@ -122,6 +122,7 @@ class Main extends Component {
           weath1={this.state.weath1}
           weath2={this.state.weath2}
           weath3={this.state.weath3}
+          lang={this.props.lang}
         />
         <div className='main__map'>
           <Map latitude={this.state.latitude} longitude={this.state.longitude}/>
@@ -133,6 +134,7 @@ class Main extends Component {
 
 Main.propTypes = {
   setBackground: PropTypes.func,
+  lang: PropTypes.string,
 };
 
 

@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from "react-i18next";
 
 function Weather({currentTemperature, description, feelsLike, wind, humidity, icon}) {
+  const { t } = useTranslation();
   return (
     <div className='main__weather__current-weather'>
       <div className='main__weather__current-weather--temperature'>
@@ -9,10 +11,10 @@ function Weather({currentTemperature, description, feelsLike, wind, humidity, ic
       </div>
       <img src={icon} alt='' className='main__weather--icon'></img>
       <div className='main__weather__current-weather--description'>
-        {description} <br/>
-        feels like: {feelsLike}&#176;C<br/>
-        wind: {wind} m/s<br/>
-        humidity: {humidity}%<br/>
+        {t(description)} <br/>
+        {t('feelsLike')}: {feelsLike}&#176;C<br/>
+        {t('wind')}: {wind} m/s<br/>
+        {t('humidity')}: {humidity}%<br/>
       </div>
     </div>
   )

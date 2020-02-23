@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function ThreeDaysCast({icon1, icon2, icon3, weath1, weath2, weath3}) {
+function ThreeDaysCast({icon1, icon2, icon3, weath1, weath2, weath3, lang}) {
+  let locale;
+
+  lang === 'ru' ? locale = lang : locale = 'en-US'; 
+
   const options = {
     weekday: 'long',
   };
@@ -17,15 +21,15 @@ function ThreeDaysCast({icon1, icon2, icon3, weath1, weath2, weath3}) {
   return (
     <div className='main__weather__three-days-forecast'>
       <div className='main__weather__three-days-forecasts forecast__first'>
-        {date1.toLocaleString('en-US', options) + ': ' + parseInt(weath1)}&#176;C
+        {date1.toLocaleString(locale, options) + ': ' + parseInt(weath1)}&#176;C
         <img src={icon1} alt='' className='main__weather__three-days-forecast--icons'></img>
       </div>
       <div className='main__weather__three-days-forecasts forecast__first'>
-        {date2.toLocaleString('en-US', options) + ': ' + parseInt(weath2)}&#176;C
+        {date2.toLocaleString(locale, options) + ': ' + parseInt(weath2)}&#176;C
         <img src={icon2} alt='' className='main__weather__three-days-forecast--icons'></img>
       </div>
       <div className='main__weather__three-days-forecasts forecast__first'>
-        {date3.toLocaleString('en-US', options) + ': ' + parseInt(weath3)}&#176;C
+        {date3.toLocaleString(locale, options) + ': ' + parseInt(weath3)}&#176;C
         <img src={icon3} alt='' className='main__weather__three-days-forecast--icons'></img>
       </div>
     </div>
@@ -39,6 +43,7 @@ ThreeDaysCast.propTypes = {
   weath1: PropTypes.number,
   weath2: PropTypes.number,
   weath3: PropTypes.number,
+  lang: PropTypes.string,
 };
 
 export default ThreeDaysCast;

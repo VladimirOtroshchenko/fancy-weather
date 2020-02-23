@@ -17,6 +17,11 @@
     width: 30px;
     height: 100%;
     border-radius: 4px;
+    cursor: pointer;
+    &:hover {
+        background-color: rgba(0, 0, 255, 0.425);
+        color: white;
+    }
 }
 
 .header__nav__btns-group--lang {

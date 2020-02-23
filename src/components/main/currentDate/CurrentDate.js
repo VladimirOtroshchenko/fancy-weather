@@ -1,14 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function CurrentDate() {
+function CurrentDate({ lang }) {
   const options = {
     weekday: 'long',
     month: 'long',
     day: 'numeric',
   };
+
+  let locale;
+  lang === 'ru' ? locale = lang : locale = 'en-US'; 
   
-  const date = new Date().toLocaleString('en-US', options);
+  const date = new Date().toLocaleString(locale, options);
+
   return (
     <div className='main__weather__date'>
       {date}
@@ -17,7 +21,7 @@ function CurrentDate() {
 }
 
 CurrentDate.propTypes = {
-  date: PropTypes.string
+  lang: PropTypes.string
 };
 
 export default CurrentDate;

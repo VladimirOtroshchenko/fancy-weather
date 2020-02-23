@@ -1,0 +1,22 @@
+{
+  "ru": {
+      "translation": {
+        "search": "Поиск",
+        "searchCity": "Искать город",
+        "feelsLike": "Ощущается",
+        "wind": "Ветер",
+        "humidity": "Влажность",
+        "ms": "м/с"
+      }
+    },
+  "en": {
+    "translation": {
+      "search": "Search",
+      "searchCity": "Search city",
+      "feelsLike": "Feels like",
+      "wind": "Wind",
+      "humidity": "Humidity",
+      "ms": "m/s"
+    }
+  }
+}
