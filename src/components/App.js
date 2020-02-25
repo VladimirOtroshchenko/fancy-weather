@@ -3,6 +3,7 @@ import './App.scss';
 import Header from './header/Header';
 import Main from './main/Main';
 import i18n from 'i18next';
+// import { Spinner } from 'react-bootstrap';
 
 class App extends Component {
   state = {
@@ -28,11 +29,11 @@ class App extends Component {
   render() {
     return (
       <div className="container" style={{backgroundImage: "url(" + this.state.backgroundImage + ")"}}>
-        <div className='bg-dark'></div>
-        <div className="content">
-          <Header language={this.state.language} setLanguage={this.setLanguage}/>
-          <Main setBackground={this.setBackground} lang={this.state.language}/>
-        </div>
+        <div className='bg-dark' />
+          <div className="content">
+            <Header language={this.state.language} setLanguage={this.setLanguage}/>
+            <Main setBackground={this.setBackground} lang={this.state.language}/>
+          </div>
       </div>
     );
   }

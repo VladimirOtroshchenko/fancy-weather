@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function ThreeDaysCast({icon1, icon2, icon3, weath1, weath2, weath3, lang}) {
+function ThreeDaysCast({threeDaysWeatherData, lang}) {
+  const [icon1, icon2, icon3, weath1, weath2, weath3] = threeDaysWeatherData;
+  
   let locale;
-
   lang === 'ru' ? locale = lang : locale = 'en-US'; 
 
   const options = {
@@ -37,12 +38,7 @@ function ThreeDaysCast({icon1, icon2, icon3, weath1, weath2, weath3, lang}) {
 }
 
 ThreeDaysCast.propTypes = {
-  icon1: PropTypes.string,
-  icon2: PropTypes.string,
-  icon3: PropTypes.string,
-  weath1: PropTypes.number,
-  weath2: PropTypes.number,
-  weath3: PropTypes.number,
+  threeDaysWeatherData: PropTypes.array,
   lang: PropTypes.string,
 };
 

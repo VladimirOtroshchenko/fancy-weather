@@ -7,28 +7,17 @@ import ThreeDaysCast from './threeDaysCast/ThreeDaysCast';
 import Map from './map/Map';
 import BackgroundQuery from './background/Background';
 import PropTypes from 'prop-types';
+// import changeImg from '../../assets/Refresh_icon.png';
 
 class Main extends Component {
   state = {
     latitude: null,
     longitude: null,
-    city: null,
-    country: null,
-    currentTemperature: null,
-    description: null,
-    feelsLike: null,
-    wind: null,
-    humidity: null,
-    icon: null,
-    icon1: null,
-    icon2: null,
-    icon3: null,
-    weath1: null,
-    weath2: null,
-    weath3: null,
+    curWeatherData: [],
+    threeDaysWeatherData: [],
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const success = (pos) => {
       this.setState({latitude: pos.coords.latitude, longitude: pos.coords.longitude});
       const base = 'https://api.opencagedata.com/geocode/v1/';
@@ -68,18 +57,22 @@ class Main extends Component {
 
       fetch(urlWeather).then(res => res.json()).then(json => {
         this.setState({
-          currentTemperature: parseInt(json.list[0].main.temp),
-          description: json.list[0].weather[0].description,
-          feelsLike: parseInt(json.list[0].main.feels_like),
-          wind: parseInt(json.list[0].wind.speed),
-          humidity: parseInt(json.list[0].main.humidity),
-          icon: json.list[0].weather[0].icon,
-          icon1: json.list[8].weather[0].icon,
-          icon2: json.list[16].weather[0].icon,
-          icon3: json.list[24].weather[0].icon,
-          weath1: json.list[8].main.temp,
-          weath2: json.list[16].main.temp,
-          weath3: json.list[24].main.temp,
+          curWeatherData: [
+            parseInt(json.list[0].main.temp),
+            json.list[0].weather[0].main,
+            parseInt(json.list[0].main.feels_like),
+            parseInt(json.list[0].wind.speed),
+            parseInt(json.list[0].main.humidity),
+            json.list[0].weather[0].icon
+          ],
+          threeDaysWeatherData: [
+            json.list[8].weather[0].icon,
+            json.list[16].weather[0].icon,
+            json.list[24].weather[0].icon,
+            json.list[8].main.temp,
+            json.list[16].main.temp,
+            json.list[24].main.temp
+          ]
         })
         BackgroundQuery(this.props.setBackground, json.list[0].weather[0].main);
       });
@@ -99,35 +92,35 @@ class Main extends Component {
   }
 
   render() {
-    const weatherIconBaseUrl = 'http://openweathermap.org/img/wn/';
-    const format = '@2x.png';
+    // const weatherIconBaseUrl = 'http://openweathermap.org/img/wn/';
+    // const format = '@2x.png';
     return (
-      <div className='main'>
-        <div className='main__weather'>
-          <Place city={this.state.city} country={this.state.country}/>
-          <CurrentDate lang={this.props.lang}/>
-          <Weather 
-            currentTemperature={this.state.currentTemperature} 
-            description={this.state.description}
-            feelsLike={this.state.feelsLike}
-            wind={this.state.wind}
-            humidity={this.state.humidity}
-            icon={weatherIconBaseUrl + this.state.icon + format}
-          />
-        </div>
-        <ThreeDaysCast 
-          icon1={weatherIconBaseUrl + this.state.icon1 + format}
-          icon2={weatherIconBaseUrl + this.state.icon2 + format}
-          icon3={weatherIconBaseUrl + this.state.icon3 + format}
-          weath1={this.state.weath1}
-          weath2={this.state.weath2}
-          weath3={this.state.weath3}
-          lang={this.props.lang}
-        />
-        <div className='main__map'>
-          <Map latitude={this.state.latitude} longitude={this.state.longitude}/>
-        </div>
-      </div>
+      <React.Fragment>
+        {this.state.city && this.state.country && (
+          <div className='main'>
+            <div className='main__weather'>
+              <Place city={this.state.city} country={this.state.country} lang={this.props.lang} />
+              <CurrentDate lang={this.props.lang}/>
+              {this.state.curWeatherData.length > 1 && (
+                <Weather
+                  lang={this.props.lang}
+                  curWeatherData={this.state.curWeatherData}
+                />
+              )}
+            </div>
+            <ThreeDaysCast 
+              threeDaysWeatherData={this.state.threeDaysWeatherData}
+              lang={this.props.lang}
+            />
+            <div className='main__map'>
+              <Map latitude={this.state.latitude} longitude={this.state.longitude}/>
+            </div>
+            {/* <div className='changeBlockq'>
+              <img src={changeImg} alt='' className='changeBlock'></img>
+            </div> */}
+          </div>
+        )}
+      </React.Fragment>
     )
   }
 }
