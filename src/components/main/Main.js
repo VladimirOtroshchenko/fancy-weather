@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
-import './Main.scss';
-import Place from './place/Place';
-import CurrentDate from './currentDate/CurrentDate';
-import Weather from './weather/Weather';
-import ThreeDaysCast from './threeDaysCast/ThreeDaysCast';
-import Map from './map/Map';
-import BackgroundQuery from './background/Background';
+import Place from './Place/Place';
+import CurrentDate from './CurrentDate/CurrentDate';
+import Weather from './Weather/Weather';
+import ThreeDaysCast from './ThreeDaysCast/ThreeDaysCast';
+import Map from './Map/Map';
+import BackgroundQuery from '../../utils/background/Background';
 import PropTypes from 'prop-types';
-// import changeImg from '../../assets/Refresh_icon.png';
 
 class Main extends Component {
   state = {
-    latitude: null,
-    longitude: null,
+    coords: [],
     curWeatherData: [],
     threeDaysWeatherData: [],
   }
 
   async componentDidMount() {
     const success = (pos) => {
-      this.setState({latitude: pos.coords.latitude, longitude: pos.coords.longitude});
+      this.setState({coords: [pos.coords.latitude, pos.coords.longitude]});
       const base = 'https://api.opencagedata.com/geocode/v1/';
       const format = 'json';
       const deliver = '%2C';
@@ -113,11 +110,8 @@ class Main extends Component {
               lang={this.props.lang}
             />
             <div className='main__map'>
-              <Map latitude={this.state.latitude} longitude={this.state.longitude}/>
+              <Map coords={this.state.coords}/>
             </div>
-            {/* <div className='changeBlockq'>
-              <img src={changeImg} alt='' className='changeBlock'></img>
-            </div> */}
           </div>
         )}
       </React.Fragment>

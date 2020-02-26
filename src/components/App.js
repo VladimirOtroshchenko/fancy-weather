@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import './App.scss';
-import Header from './header/Header';
-import Main from './main/Main';
+import Header from './Header';
+import Main from './Main';
 import i18n from 'i18next';
-// import { Spinner } from 'react-bootstrap';
 
 class App extends Component {
   state = {

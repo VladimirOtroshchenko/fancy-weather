@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Place = ({city, country, lang}) => {
-  console.log('place');
   const [translated, setTranslated] = useState();
 
   const base = 'https://translate.yandex.net/api/v1.5/tr.json/translate?';
@@ -14,17 +13,15 @@ const Place = ({city, country, lang}) => {
 
   fetch(urlCoords)
    .then(response => response.json())
-   .then(el => el.text[0].length > 1 ? setTranslated(el.text[0]) : null);
+   .then(el => setTranslated(el.text[0]));
 
-  if (!translated) {
-    return <div>loading...</div>
-  }
+  if (!translated) return <div>Loading...</div>
 
   return (
     <div className='main__weather__place'>
       {translated}
     </div>
-  )
+  )  
 }
 
 Place.propTypes = {
